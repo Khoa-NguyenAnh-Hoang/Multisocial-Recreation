@@ -1,0 +1,73 @@
+% ============================================================
+%  main.tex — Springer LNCS Paper
+%  Phát hiện Văn bản do Máy Tạo Ra trên Mạng Xã Hội Đa Ngôn Ngữ
+%  Compile: pdflatex -> biber -> pdflatex -> pdflatex
+% ============================================================
+\documentclass[runningheads]{llncs}
+
+% ---------- Packages ----------
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese,english]{babel}   % Vietnamese + English
+\usepackage{graphicx}                    % \includegraphics
+\usepackage{subcaption}                  % Subfigures (confusion matrix grid)
+\usepackage{booktabs}                    % Professional tables (\toprule, \midrule, \bottomrule)
+\usepackage{multirow}                    % Merged table cells
+\usepackage{amsmath}                     % Math
+% Bibliography: dùng BibTeX cổ điển với splncs04.bst (đi kèm llncs.cls)
+
+% ---------- Graphics path ----------
+\graphicspath{{figures/}}
+
+% ============================================================
+\begin{document}
+
+% ---------- Title & Authors ----------
+\title{Phát hiện Văn bản do Máy Tạo Ra trên\\
+Mạng Xã Hội Đa Ngôn Ngữ:\\
+Nghiên cứu So sánh Bốn Phương pháp\\
+trên Phần Cứng Phổ Thông}
+
+\titlerunning{Phát hiện MGT Đa Ngôn Ngữ trên MXH}
+
+\author{
+    \textbf{Hoàng Nguyễn Anh Khoa}\textsuperscript{1}\\
+    \textsuperscript{1}Trường Đại học Công nghệ Thông tin\\
+    Đại học Quốc gia TP. Hồ Chí Minh, Việt Nam\\
+    \texttt{23520736@gm.uit.edu.vn}
+}
+
+\authorrunning{H. N. A. Khoa}
+
+\institute{Trường Đại học Công nghệ Thông tin,\\
+Đại học Quốc gia TP. Hồ Chí Minh, Việt Nam\\
+\email{23520736@gm.uit.edu.vn}}
+
+\maketitle
+
+% ---------- Abstract ----------
+\input{sections/00_abstract}
+
+% ---------- Section 1: Introduction ----------
+\input{sections/01_introduction}
+
+% ---------- Section 2: Related Work ----------
+\input{sections/02_related_work}
+
+% ---------- Section 3: Dataset ----------
+\input{sections/03_dataset}
+
+% ---------- Section 4: Methodology ----------
+\input{sections/04_methodology}
+
+% ---------- Section 5: Results & Discussion ----------
+\input{sections/05_results}
+
+% ---------- Section 6: Conclusion ----------
+\input{sections/06_conclusion}
+
+% ---------- References ----------
+\bibliographystyle{splncs04}
+\bibliography{sections/references}
+
+\end{document}

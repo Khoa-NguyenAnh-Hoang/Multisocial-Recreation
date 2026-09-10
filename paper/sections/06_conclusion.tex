@@ -1,0 +1,57 @@
+% ============================================================
+%  sections/06_conclusion.tex
+%  6. Kết luận & Hướng phát triển  (~0.5 trang)
+% ============================================================
+
+\section{Kết Luận và Hướng Phát Triển}
+\label{sec:conclusion}
+
+Bài báo này trình bày nghiên cứu so sánh hệ thống bốn phương pháp phát
+hiện văn bản do máy tạo ra (MGT) trên dữ liệu mạng xã hội đa ngôn ngữ
+gồm bốn ngôn ngữ: EN, VI, ZH, AR. Bốn kết luận chính được rút ra:
+
+\begin{enumerate}
+    \item \textbf{Thiên lệch Anh ngữ là nghiêm trọng và nguy hiểm:}
+    Bộ phát hiện tiền huấn luyện chỉ dành cho tiếng Anh (\texttt{roberta-base-openai-detector})
+    đạt dưới mức ngẫu nhiên trên VI, ZH, AR --- thậm chí phân loại sai
+    hệ thống với AR (F1 = 0,336). Triển khai detector đơn ngôn ngữ cho
+    bài toán đa ngôn ngữ là không thể chấp nhận được.
+
+    \item \textbf{Tinh chỉnh XLM-RoBERTa là giải pháp thực tế tối ưu:}
+    Đạt \textbf{81,4\% accuracy} trung bình, huấn luyện trong 7,5
+    phút trên GPU T4 thông thường với chi phí ước tính \textbf{\$1,50}.
+    Phương pháp này chứng minh rằng phát hiện MGT đa ngôn ngữ chất lượng
+    cao không đòi hỏi phần cứng A100 đắt tiền.
+
+    \item \textbf{PPL zero-shot hữu ích có điều kiện:}
+    Phát hiện dựa trên perplexity (Qwen2.5-1.5B) hoạt động tốt khi tỉ
+    lệ PPL giữa hai lớp đủ lớn (EN: 6,4$\times$, AR: 3,4$\times$), nhưng
+    thất bại với văn bản MXH nhiễu (VI Teencode, ZH Weibo ngắn).
+
+    \item \textbf{Học chuyển giao liên ngôn ngữ là chưa đủ:}
+    Thí nghiệm leave-one-language-out cho thấy mỗi ngôn ngữ cần dữ liệu
+    huấn luyện riêng. Tiếng Việt đặc biệt khó khăn (F1 = 0,134 khi
+    không có dữ liệu VI trong tập huấn luyện), khẳng định tính tất yếu
+    của dữ liệu đa ngôn ngữ trong bài toán MGT trên MXH.
+\end{enumerate}
+
+\subsection*{Hướng Phát Triển}
+
+Nghiên cứu tiếp theo có thể khai thác các hướng sau:
+
+\begin{itemize}
+    \item \textbf{Mô hình cấp ký tự} cho VI và ZH nhằm xử lý đặc tính
+          Teencode và bài đăng siêu ngắn (15--30 ký tự).
+    \item \textbf{Data augmentation} với Teencode giả lập để cải thiện
+          khả năng tổng quát hóa trên VI.
+    \item \textbf{Mô hình lớn hơn với quantization:} thử nghiệm XLM-R
+          large (559M) hoặc mGPT với INT8/INT4 quantization trên T4.
+    \item \textbf{Mở rộng ngôn ngữ:} Thêm tiếng Nhật, Hàn, Hindi ---
+          các ngôn ngữ MXH lớn chưa được nghiên cứu kỹ trong bài toán MGT.
+    \item \textbf{Phát hiện cấp đặc trưng ngôn ngữ học:} kết hợp PPL
+          với đặc trưng cú pháp và ngữ nghĩa để vượt qua giới hạn của
+          phương pháp thuần PPL.
+\end{itemize}
+
+Mã nguồn, bộ dữ liệu và pipeline thực nghiệm sẽ được công khai để
+thúc đẩy nghiên cứu tái lập và mở rộng.

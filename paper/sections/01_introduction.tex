@@ -1,0 +1,52 @@
+% ============================================================
+%  sections/01_introduction.tex
+%  1. Giới thiệu  (~0.5 trang)
+% ============================================================
+
+\section{Giới Thiệu}
+\label{sec:intro}
+
+% --- Bối cảnh ---
+Sự bùng nổ của các mô hình ngôn ngữ lớn (LLM) như GPT-4, LLaMA và
+Qwen trong những năm gần đây đã tạo ra khả năng tạo văn bản tự động
+với chất lượng gần tương đương con người~\cite{brown2020gpt3,
+touvron2023llama}. Trên các nền tảng mạng xã hội (MXH) đa ngôn ngữ,
+điều này tạo ra rủi ro nghiêm trọng: nội dung do máy tạo ra (Machine-Generated
+Text --- MGT) có thể được phát tán quy mô lớn nhằm mục đích gây nhiễu
+thông tin, thao túng dư luận, hoặc tự động hóa spam~\cite{zellers2019grover}.
+
+% --- Khoảng trống nghiên cứu ---
+Hầu hết các bộ phát hiện MGT hiện nay được xây dựng và đánh giá chủ
+yếu trên tiếng Anh~\cite{solaiman2019gpt2detector,mitchell2023detectgpt}.
+Khi áp dụng sang ngôn ngữ khác, hiệu năng sụt giảm nghiêm trọng do
+thiên lệch ngôn ngữ trong quá trình huấn luyện. Ngoài ra, nhiều phương
+pháp tiên tiến đòi hỏi GPU A100 (40--80 GB VRAM), xa tầm tay của hầu
+hết nhà nghiên cứu và tổ chức tại các nước đang phát triển.
+
+% --- Đóng góp ---
+Bài báo này đề xuất và đánh giá ba phương pháp phát hiện MGT trên
+dữ liệu MXH đa ngôn ngữ, với các đóng góp chính sau:
+
+\begin{enumerate}
+    \item \textbf{Bộ dữ liệu đa ngôn ngữ:} Xây dựng MultiSocial-4L, bộ
+          dữ liệu gồm 15.985 bài đăng MXH cân bằng (human/machine) trên bốn
+          ngôn ngữ EN, VI, ZH, AR, được tạo từ các corpus thực tế và các LLM
+          hiện đại.
+
+    \item \textbf{Đánh giá hệ thống:} So sánh toàn diện bốn phương pháp ---
+          zero-shot với bộ phát hiện tiền huấn luyện (RoBERTa), tinh chỉnh
+          mô hình đa ngôn ngữ (XLM-RoBERTa), phát hiện thống kê dựa trên
+          Perplexity (Qwen2.5-1.5B), và học chuyển giao đa ngôn ngữ
+          (leave-one-language-out) --- trên cùng một bộ dữ liệu.
+
+    \item \textbf{Khả thi trên phần cứng phổ thông:} Toàn bộ pipeline
+          thực nghiệm được thiết kế và chạy thành công trên Google Colab T4
+          (16 GB VRAM), với tổng chi phí API ước tính \$1,50.
+\end{enumerate}
+
+% --- Cấu trúc bài báo ---
+Phần còn lại của bài báo được tổ chức như sau: Phần~\ref{sec:related}
+điểm lại các công trình liên quan; Phần~\ref{sec:dataset} mô tả quá
+trình xây dựng bộ dữ liệu; Phần~\ref{sec:method} trình bày bốn phương
+pháp thực nghiệm; Phần~\ref{sec:results} báo cáo và phân tích kết quả;
+Phần~\ref{sec:conclusion} tổng kết và đề xuất hướng nghiên cứu tiếp theo.

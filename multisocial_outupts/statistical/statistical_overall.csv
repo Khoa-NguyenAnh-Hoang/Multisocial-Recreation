@@ -1,0 +1,2 @@
+language,auc_roc,n_samples,mean_ppl_human,mean_ppl_machine,ppl_ratio
+overall,0.6527420294211584,3197,726.3983764648438,311.1568298339844,0.42835562401486693

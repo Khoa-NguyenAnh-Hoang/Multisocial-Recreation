@@ -1,0 +1,79 @@
+% ============================================================
+%  sections/04_methodology.tex
+%  4. Phương pháp  (~1 trang)
+% ============================================================
+
+\section{Phương Pháp}
+\label{sec:method}
+
+Chúng tôi đánh giá bốn phương pháp theo thứ tự tăng dần về độ phức tạp
+và chi phí tính toán: (1) zero-shot với bộ phát hiện tiền huấn luyện,
+(2) tinh chỉnh mô hình đa ngôn ngữ có giám sát, (3) phát hiện thống
+kê zero-shot dựa trên perplexity, và (4) học chuyển giao đa ngôn ngữ
+(leave-one-language-out).
+
+\subsection{Phương Pháp 1: Baseline Zero-Shot (RoBERTa)}
+
+Chúng tôi áp dụng trực tiếp mô hình \texttt{roberta-base-openai-detector}
+~\cite{solaiman2019gpt2detector} --- được tiền huấn luyện để phân biệt
+văn bản GPT-2 với văn bản con người tiếng Anh --- lên toàn bộ bộ kiểm
+tra đa ngôn ngữ mà không có bất kỳ thích nghi nào. Nhãn dự đoán được
+xác định bằng ngưỡng $\tau = 0.5$ trên điểm sigmoid của logit:
+\[
+\hat{y} = \mathbf{1}\!\left[\sigma(z_{\text{machine}} - z_{\text{human}}) \geq 0.5\right]
+\]
+Đây là kịch bản ``worst-case'' phản ánh thực tế thường gặp khi triển
+khai một detector tiếng Anh cho dữ liệu đa ngôn ngữ.
+
+\subsection{Phương Pháp 2: Tinh Chỉnh XLM-RoBERTa}
+
+Chúng tôi tinh chỉnh \texttt{xlm-roberta-base}~\cite{conneau2020xlmr}
+(278M tham số, được tiền huấn luyện trên 100 ngôn ngữ) theo bài toán
+phân loại nhị phân (human/machine) trên toàn bộ 12.789 mẫu huấn luyện
+đa ngôn ngữ. Các siêu tham số chính:
+
+\begin{itemize}
+    \item Số epoch: 3; Learning rate: $2 \times 10^{-5}$; Batch size: 16
+    \item Max sequence length: 256 tokens; Precision: fp16
+    \item Fallback OOM: batch size 8 + gradient accumulation 2
+    \item Metric tối ưu: Macro-F1
+\end{itemize}
+
+Mô hình được huấn luyện trên Google Colab T4 (16 GB VRAM). Tổng thời
+gian huấn luyện: \textbf{7 phút 30 giây} (2.400 bước). Checkpoint tốt
+nhất (epoch 3) được lưu lại để đánh giá.
+
+\subsection{Phương Pháp 3: Phát Hiện Thống Kê Dựa Trên Perplexity}
+
+Dựa trên giả thuyết rằng LLM gán perplexity thấp hơn cho văn bản do
+máy tạo ra (vì nó khớp với phân phối ngôn ngữ của mô hình), chúng tôi
+sử dụng \texttt{Qwen/Qwen2.5-1.5B}~\cite{qwen2024qwen25} để tính PPL
+của từng bài đăng:
+
+\[
+\text{PPL}(x) = \exp\!\left(\frac{1}{T}\sum_{t=1}^{T} \mathcal{L}(x_t \mid x_{<t})\right)
+\]
+
+trong đó $\mathcal{L}$ là cross-entropy loss và $T$ là số token. Điểm
+phát hiện được định nghĩa là $s = -\text{PPL}(x)$ (điểm cao hơn $\Rightarrow$
+khả năng do máy tạo cao hơn). Phương pháp này hoàn toàn zero-shot, không
+cần nhãn. Metric đánh giá: AUC-ROC (không phụ thuộc ngưỡng). Cấu hình:
+\texttt{bfloat16}, \texttt{device\_map='auto'}, max\_length=512, batch=8.
+
+\subsection{Phương Pháp 4: Học Chuyển Giao (Transfer Learning)}
+
+Để đánh giá khả năng tổng quát hóa liên ngôn ngữ, chúng tôi thực hiện
+thí nghiệm \textit{leave-one-language-out}: với mỗi ngôn ngữ, huấn luyện
+XLM-RoBERTa trên ba ngôn ngữ còn lại và kiểm tra trên ngôn ngữ bị giữ lại.
+Mô hình được khởi tạo mới cho mỗi thí nghiệm. Các siêu tham số chính:
+
+\begin{itemize}
+    \item Số epoch: 5; Learning rate: $2 \times 10^{-5}$; Batch size: 16
+    \item Max sequence length: 512 tokens; Weight decay: 0,01
+    \item Warmup ratio: 0,1; Early stopping patience: 2
+    \item Precision: fp16; Train/val split: 80/20
+\end{itemize}
+
+Quy trình này mô phỏng kịch bản thực tế khi một ngôn ngữ mới xuất hiện
+mà không có dữ liệu huấn luyện, buộc hệ thống phải dựa vào kiến thức
+từ các ngôn ngữ khác.

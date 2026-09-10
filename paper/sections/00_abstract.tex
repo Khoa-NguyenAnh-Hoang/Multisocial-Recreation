@@ -1,0 +1,30 @@
+% ============================================================
+%  sections/00_abstract.tex
+%  Abstract — ~150 từ
+% ============================================================
+
+\begin{abstract}
+Sự phổ biến của các mô hình ngôn ngữ lớn (LLM) đã tạo ra làn sóng
+văn bản do máy tạo ra (MGT) tràn lan trên các nền tảng mạng xã hội
+đa ngôn ngữ, đặt ra thách thức cấp thiết về phát hiện và kiểm duyệt
+nội dung. Các phương pháp hiện tại chủ yếu được thiết kế cho tiếng Anh
+và đòi hỏi phần cứng GPU cao cấp, gây khó khăn cho việc triển khai
+thực tế. Bài báo này trình bày một nghiên cứu so sánh hệ thống bốn
+phương pháp phát hiện MGT trên dữ liệu mạng xã hội đa ngôn ngữ gồm
+bốn ngôn ngữ: tiếng Anh (EN), tiếng Việt (VI), tiếng Trung (ZH) và
+tiếng Ả Rập (AR). Chúng tôi xây dựng một bộ dữ liệu cân bằng gồm
+15.986 bài đăng từ các corpus MXH thực tế, sau đó lần lượt đánh giá:
+(1) bộ phát hiện tiền huấn luyện zero-shot, (2) tinh chỉnh XLM-RoBERTa
+đa ngôn ngữ, (3) phát hiện thống kê dựa trên Perplexity, và (4) học
+chuyển giao đa ngôn ngữ (leave-one-language-out). Phương
+pháp tinh chỉnh XLM-RoBERTa đạt độ chính xác trung bình \textbf{81,4\%}
+trên cả bốn ngôn ngữ, được huấn luyện trong 7,5 phút trên GPU
+T4 với chi phí ước tính \textbf{\$1,50}. Kết quả chứng minh rằng phát
+hiện MGT đa ngôn ngữ chất lượng cao hoàn toàn khả thi trên phần cứng
+phổ thông, đồng thời cho thấy học chuyển giao liên ngôn ngữ là chưa
+đủ, đặc biệt với tiếng Việt (F1 = 0,134 khi thiếu dữ liệu huấn luyện).
+
+\keywords{Phát hiện văn bản do máy tạo \and Mạng xã hội đa ngôn ngữ
+\and XLM-RoBERTa \and Perplexity \and Tiếng Việt \and Tiếng Trung \and
+Tiếng Ả Rập}
+\end{abstract}

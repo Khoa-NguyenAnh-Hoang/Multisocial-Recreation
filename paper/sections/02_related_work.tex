@@ -1,0 +1,46 @@
+% ============================================================
+%  sections/02_related_work.tex
+%  2. Công trình liên quan  (~0.5 trang)
+% ============================================================
+
+\section{Công Trình Liên Quan}
+\label{sec:related}
+
+% --- Phát hiện MGT tiếng Anh ---
+\subsection*{Phát hiện MGT đơn ngôn ngữ}
+
+Solaiman et al.~\cite{solaiman2019gpt2detector} giới thiệu bộ phát hiện
+GPT-2 đầu tiên dựa trên RoBERTa, được fine-tuned trên văn bản do GPT-2
+tạo ra. Dù đạt độ chính xác cao trên tiếng Anh, mô hình này không tổng
+quát hóa sang ngôn ngữ khác do thiếu dữ liệu huấn luyện đa ngôn ngữ.
+Mitchell et al.~\cite{mitchell2023detectgpt} đề xuất DetectGPT, một
+phương pháp zero-shot dựa trên độ cong của hàm log-probability,
+không cần nhãn huấn luyện nhưng đòi hỏi LLM ở mức trắng hộp (white-box).
+
+% --- Phát hiện MGT đa ngôn ngữ ---
+\subsection*{Phát hiện MGT đa ngôn ngữ}
+
+Guo et al.~\cite{guo2023hcvariant} nghiên cứu phát hiện MGT trên tiếng
+Trung, cho thấy các mô hình tiếng Anh thất bại hoàn toàn khi chuyển
+sang ngữ cảnh MXH Trung Quốc (Weibo). Lý giải được đưa ra là đặc tính
+bài đăng ngắn và ngữ nghĩa dày đặc ở cấp ký tự. Các nghiên cứu về
+tiếng Việt~\cite{nguyen2023vsmec} và tiếng Ả Rập~\cite{alomari2022arabic}
+cho thấy tương tự: hiện tượng ``Teencode'' trong tiếng Việt (viết tắt
+có chủ đích, bỏ dấu) và cấu trúc hình thái phong phú trong tiếng Ả Rập
+gây khó khăn đặc thù cho các detector.
+
+% --- Phương pháp dựa trên Perplexity ---
+\subsection*{Phát hiện dựa trên Perplexity}
+
+Hans et al.~\cite{hans2024binoculars} và Equi et al.~\cite{equi2024ppl}
+cho thấy văn bản do LLM tạo ra thường có perplexity (PPL) thấp hơn so
+với văn bản con người khi được đánh giá bởi cùng một LLM, do phân phối
+của chúng khớp với phân phối huấn luyện. Tuy nhiên, phương pháp này
+nhạy cảm với nhiễu ngôn ngữ --- một đặc điểm phổ biến trong văn bản
+MXH không chính thức.
+
+% --- Vị trí bài báo này ---
+Bài báo này bổ sung vào khoảng trống nghiên cứu bằng cách (i) xây dựng
+bộ dữ liệu MXH thực tế cho cả bốn ngôn ngữ EN/VI/ZH/AR, (ii) đánh giá
+đồng thời và có hệ thống ba họ phương pháp, và (iii) chứng minh tính khả
+thi trên phần cứng GPU tiêu dùng (T4).

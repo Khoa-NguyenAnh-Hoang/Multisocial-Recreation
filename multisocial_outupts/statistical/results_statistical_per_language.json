@@ -1,0 +1,49 @@
+{
+  "seed": 42,
+  "model_name": "Qwen/Qwen2.5-1.5B",
+  "max_length": 512,
+  "batch_size": 8,
+  "results": [
+    {
+      "language": "en",
+      "auc_roc": 0.753671875,
+      "n_samples": 800,
+      "mean_ppl_human": 1193.5548095703125,
+      "mean_ppl_machine": 187.09530639648438,
+      "ppl_ratio": 0.15675468348524346
+    },
+    {
+      "language": "vi",
+      "auc_roc": 0.537824298405007,
+      "n_samples": 797,
+      "mean_ppl_human": 1210.432861328125,
+      "mean_ppl_machine": 796.0252685546875,
+      "ppl_ratio": 0.6576368619745365
+    },
+    {
+      "language": "zh",
+      "auc_roc": 0.53410625,
+      "n_samples": 800,
+      "mean_ppl_human": 221.5137481689453,
+      "mean_ppl_machine": 207.8848419189453,
+      "ppl_ratio": 0.9384737680498032
+    },
+    {
+      "language": "ar",
+      "auc_roc": 0.7784468749999999,
+      "n_samples": 800,
+      "mean_ppl_human": 260.7307434082031,
+      "mean_ppl_machine": 76.65316772460938,
+      "ppl_ratio": 0.29399359171311945
+    },
+    {
+      "language": "overall",
+      "auc_roc": 0.6527420294211584,
+      "n_samples": 3197,
+      "mean_ppl_human": 726.3983764648438,
+      "mean_ppl_machine": 311.1568298339844,
+      "ppl_ratio": 0.42835562401486693
+    }
+  ],
+  "roc_plot_path": "/content/drive/MyDrive/multisocial_outputs/statistical/roc_combined.png"
+}

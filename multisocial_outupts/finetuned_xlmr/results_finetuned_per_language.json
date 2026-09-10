@@ -1,0 +1,67 @@
+{
+  "seed": 42,
+  "model_name": "xlm-roberta-base",
+  "train_rows": 12789,
+  "test_rows": 3197,
+  "trainer_eval": {
+    "eval_loss": 0.4087926149368286,
+    "eval_accuracy": 0.8135752267751016,
+    "eval_macro_f1": 0.8135382840071774,
+    "eval_roc_auc": 0.9143648117183636
+  },
+  "overall": {
+    "language": "overall",
+    "accuracy": 0.8135752267751016,
+    "precision_macro": 0.8142696888169777,
+    "recall_macro": 0.8138268641854698,
+    "f1_macro": 0.8135382840071774,
+    "roc_auc": 0.9143648117183636,
+    "n_samples": 3197
+  },
+  "per_language": [
+    {
+      "language": "en",
+      "accuracy": 0.95375,
+      "precision_macro": 0.9537528359552248,
+      "recall_macro": 0.95375,
+      "f1_macro": 0.953749927734262,
+      "roc_auc": 0.9842343750000001,
+      "n_samples": 800
+    },
+    {
+      "language": "vi",
+      "accuracy": 0.7026348808030113,
+      "precision_macro": 0.702138441268876,
+      "recall_macro": 0.7013426206339592,
+      "f1_macro": 0.7015523656788933,
+      "roc_auc": 0.7816569503331314,
+      "n_samples": 797
+    },
+    {
+      "language": "zh",
+      "accuracy": 0.715,
+      "precision_macro": 0.7234985316666234,
+      "recall_macro": 0.7150000000000001,
+      "f1_macro": 0.712264716460856,
+      "roc_auc": 0.8111281250000001,
+      "n_samples": 800
+    },
+    {
+      "language": "ar",
+      "accuracy": 0.8825,
+      "precision_macro": 0.8831129807692308,
+      "recall_macro": 0.8825000000000001,
+      "f1_macro": 0.882452981192477,
+      "roc_auc": 0.962028125,
+      "n_samples": 800
+    }
+  ],
+  "best_checkpoint": "/content/drive/MyDrive/multisocial_outputs/finetuned_xlmr/checkpoints/checkpoint-2400",
+  "confusion_matrices": {
+    "en": "/content/drive/MyDrive/multisocial_outputs/finetuned_xlmr/cm_en.png",
+    "vi": "/content/drive/MyDrive/multisocial_outputs/finetuned_xlmr/cm_vi.png",
+    "zh": "/content/drive/MyDrive/multisocial_outputs/finetuned_xlmr/cm_zh.png",
+    "ar": "/content/drive/MyDrive/multisocial_outputs/finetuned_xlmr/cm_ar.png"
+  },
+  "roc_plot_path": "/content/drive/MyDrive/multisocial_outputs/finetuned_xlmr/roc_combined.png"
+}

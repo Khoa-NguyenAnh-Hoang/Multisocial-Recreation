@@ -1,0 +1,90 @@
+% ============================================================
+%  sections/03_dataset.tex
+%  3. Xây dựng Dataset  (~0.75 trang)
+% ============================================================
+
+\section{Xây Dựng Bộ Dữ Liệu}
+\label{sec:dataset}
+
+\subsection{Dữ Liệu Nguồn (Văn Bản Con Người)}
+
+Để phản ánh thực tế đa dạng của mạng xã hội, chúng tôi chọn bốn corpus
+MXH thực tế, mỗi corpus đại diện cho một ngôn ngữ và nền tảng khác nhau
+(Bảng~\ref{tab:sources}).
+
+\begin{table}[h]
+\centering
+\caption{Corpus dữ liệu nguồn (văn bản con người)}
+\label{tab:sources}
+\begin{tabular}{llll}
+\toprule
+\textbf{Ngôn ngữ} & \textbf{Corpus} & \textbf{Nền tảng} & \textbf{Số bài} \\
+\midrule
+EN & Sentiment140    & Twitter & 2.000 \\
+VI & VSmec           & Facebook/MXH VN & 2.000 \\
+ZH & Weibo Senti 100K & Weibo  & 2.000 \\
+AR & AJGT            & Twitter & 2.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Từ mỗi corpus, chúng tôi lấy mẫu ngẫu nhiên có phân tầng 2.000 bài
+đăng, đảm bảo đa dạng về chủ đề và phong cách. Các bài đăng trùng lặp
+và rỗng được loại bỏ trước khi tạo văn bản máy.
+
+\subsection{Tạo Văn Bản Máy (Machine Text)}
+
+Mỗi bài đăng con người được paraphrase 1:1 bởi một LLM phù hợp với
+ngôn ngữ đó thông qua API (Bảng~\ref{tab:llms}). Chúng tôi sử dụng
+prompt dạng paraphrase thay vì generation thuần túy nhằm giữ nguyên
+chủ đề và ngữ cảnh, đồng thời tạo ra cặp (human, machine) có nội dung
+tương đồng --- kịch bản thực tế nhất của MGT trên MXH.
+
+\begin{table}[h]
+\centering
+\caption{LLM được sử dụng để tạo văn bản máy}
+\label{tab:llms}
+\begin{tabular}{llll}
+\toprule
+\textbf{Ngôn ngữ} & \textbf{Mô hình} & \textbf{Nhà cung cấp API} \\
+\midrule
+EN & LLaMA 3.1-8B-Instant      & Groq API \\
+VI & GPT-OSS 20B               & NVIDIA NIM \\
+ZH & Qwen3-80B-A3B-Instruct    & NVIDIA NIM \\
+AR & LLaMA 4 Maverick 17B      & NVIDIA NIM \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Các bài đăng không được xử lý thành công (lỗi API, phản hồi rỗng hoặc
+quá ngắn) bị loại bỏ. Đối với tiếng Việt, 7 bài bị loại do lỗi API
+và vi phạm chính sách nội dung, dẫn đến 3.986 bài thay vì 4.000.
+
+\subsection{Thống Kê Bộ Dữ Liệu Cuối}
+
+Bộ dữ liệu cuối gồm \textbf{15.986 bài đăng} (7.993 human / 7.993
+machine), được phân chia 80/20 theo phân tầng ngôn ngữ và nhãn
+(Bảng~\ref{tab:dataset_stats}).
+
+\begin{table}[h]
+\centering
+\caption{Thống kê bộ dữ liệu MultiSocial-4L}
+\label{tab:dataset_stats}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Ngôn ngữ} & \textbf{Tổng} & \textbf{Train} & \textbf{Test} & \textbf{Ghi chú} \\
+\midrule
+EN & 4.000 & 3.200 & 800 & \\
+VI & 3.986 & 3.189 & 797 & 7 bài bị loại \\
+ZH & 4.000 & 3.200 & 800 & \\
+AR & 4.000 & 3.200 & 800 & \\
+\midrule
+\textbf{Tổng} & \textbf{15.986} & \textbf{12.789} & \textbf{3.197} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Mỗi bản ghi gồm các trường: \texttt{text}, \texttt{label} (0=human,
+1=machine), \texttt{language}, \texttt{length}, \texttt{source} và
+\texttt{split}. Dữ liệu được cân bằng hoàn toàn (50\% human / 50\%
+machine) theo từng ngôn ngữ.

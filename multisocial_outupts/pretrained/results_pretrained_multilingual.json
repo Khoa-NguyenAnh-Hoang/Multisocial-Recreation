@@ -1,0 +1,58 @@
+{
+  "seed": 42,
+  "model_used": "roberta-base-openai-detector",
+  "overall": {
+    "language": "overall",
+    "accuracy": 0.5267438223334376,
+    "precision_macro": 0.5478096423017107,
+    "recall_macro": 0.5300810678790839,
+    "f1_macro": 0.4802700112056971,
+    "roc_auc": 0.5899866374208578,
+    "n_samples": 3197
+  },
+  "per_language": [
+    {
+      "language": "en",
+      "accuracy": 0.64125,
+      "precision_macro": 0.6746859903381642,
+      "recall_macro": 0.64125,
+      "f1_macro": 0.6232205128205128,
+      "roc_auc": 0.737525,
+      "n_samples": 800
+    },
+    {
+      "language": "vi",
+      "accuracy": 0.506900878293601,
+      "precision_macro": 0.5176179169231672,
+      "recall_macro": 0.5151675752069453,
+      "f1_macro": 0.4929935171621195,
+      "roc_auc": 0.5162401574803149,
+      "n_samples": 797
+    },
+    {
+      "language": "zh",
+      "accuracy": 0.47625,
+      "precision_macro": 0.4555404757169098,
+      "recall_macro": 0.47625,
+      "f1_macro": 0.40721982205984036,
+      "roc_auc": 0.481178125,
+      "n_samples": 800
+    },
+    {
+      "language": "ar",
+      "accuracy": 0.4825,
+      "precision_macro": 0.34965635738831613,
+      "recall_macro": 0.4825,
+      "f1_macro": 0.3357720446669234,
+      "roc_auc": 0.6164124999999999,
+      "n_samples": 800
+    }
+  ],
+  "roc_plot_path": "/content/drive/MyDrive/multisocial_outputs/pretrained/roc_combined.png",
+  "cm_paths": {
+    "en": "/content/drive/MyDrive/multisocial_outputs/pretrained/cm_en.png",
+    "vi": "/content/drive/MyDrive/multisocial_outputs/pretrained/cm_vi.png",
+    "zh": "/content/drive/MyDrive/multisocial_outputs/pretrained/cm_zh.png",
+    "ar": "/content/drive/MyDrive/multisocial_outputs/pretrained/cm_ar.png"
+  }
+}

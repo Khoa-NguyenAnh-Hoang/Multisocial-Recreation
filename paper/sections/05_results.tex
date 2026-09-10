@@ -1,0 +1,196 @@
+% ============================================================
+%  sections/05_results.tex
+%  5. Kết quả & Thảo luận  (~2 trang)
+% ============================================================
+
+\section{Kết Quả và Thảo Luận}
+\label{sec:results}
+
+\subsection{Kết Quả Baseline Zero-Shot}
+
+Bảng~\ref{tab:baseline} trình bày kết quả của \texttt{roberta-base-openai-detector}
+trên bộ kiểm tra. Chỉ có tiếng Anh vượt mức ngẫu nhiên (64,1\%), trong
+khi ba ngôn ngữ còn lại đều ở mức 48--51\% --- sát ngưỡng phân loại
+ngẫu nhiên (50\%). Đặc biệt, tiếng Ả Rập đạt Macro-F1 chỉ
+\textbf{0,336}, cho thấy mô hình đang phân loại sai hệ thống: dự đoán
+``machine'' cho văn bản human và ngược lại.
+
+\begin{table}[h]
+\centering
+\caption{Kết quả Phương pháp 1: Baseline Zero-Shot (roberta-base-openai-detector)}
+\label{tab:baseline}
+\begin{tabular}{lrrrl}
+\toprule
+\textbf{Ngôn ngữ} & \textbf{Accuracy} & \textbf{Macro-F1} & \textbf{N test} & \textbf{Nhận xét} \\
+\midrule
+EN & 64,1\% & 0,623 & 800 & Vượt ngẫu nhiên \\
+VI & 50,7\% & 0,493 & 797 & Gần ngẫu nhiên \\
+ZH & 47,6\% & 0,407 & 800 & Dưới ngẫu nhiên \\
+AR & 48,3\% & 0,336 & 800 & Phân loại sai hệ thống \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Kết quả này xác nhận \textbf{thiên lệch Anh ngữ nghiêm trọng} trong
+bộ phát hiện tiền huấn luyện: triển khai trực tiếp cho dữ liệu đa
+ngôn ngữ không chỉ kém hiệu quả mà còn có thể gây hại hơn không dùng gì.
+Đường cong ROC của cả bốn ngôn ngữ được thể hiện tại
+Hình~\ref{fig:roc_baseline}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{roc_baseline.png}
+\caption{Đường cong ROC --- Baseline (roberta-base-openai-detector).
+Chỉ EN đạt AUC khả dụng (>0.6); AR, VI, ZH gần như ngẫu nhiên.}
+\label{fig:roc_baseline}
+\end{figure}
+
+\subsection{Kết Quả Tinh Chỉnh XLM-RoBERTa}
+
+Sau khi tinh chỉnh trên 12.789 mẫu đa ngôn ngữ, hiệu năng cải thiện
+đáng kể trên tất cả bốn ngôn ngữ (Bảng~\ref{tab:finetuned}). Mức tăng
+trung bình ước tính là \textbf{+28,7 điểm phần trăm} so với baseline.
+
+\begin{table}[h]
+\centering
+\caption{Kết quả Phương pháp 2: Tinh Chỉnh XLM-RoBERTa (xlm-roberta-base)}
+\label{tab:finetuned}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Ngôn ngữ} & \textbf{Accuracy} & \textbf{Macro-F1} & \textbf{N test}
+    & \textbf{$\Delta$ Acc} \\
+\midrule
+EN & \textbf{95,4\%} & 0,954 & 800  & +31,3 pp \\
+VI & 70,3\%          & 0,702 & 797  & +19,6 pp \\
+ZH & 71,5\%          & 0,712 & 800  & +23,9 pp \\
+AR & \textbf{88,3\%} & 0,882 & 800  & +40,0 pp \\
+\midrule
+\textbf{Tổng} & \textbf{81,4\%} & \textbf{0,814} & 3.197 & \textbf{+28,7 pp} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tiếng Ả Rập đạt mức tăng lớn nhất (+40,0 pp), từ trạng thái ``phân
+loại sai hệ thống'' lên 88,3\% --- cho thấy XLM-RoBERTa đã học được
+các đặc trưng hình thái của tiếng Ả Rập một cách hiệu quả. Tiếng Việt
+và tiếng Trung đạt khoảng 70--72\%, thấp hơn đáng kể so với EN và AR,
+phản ánh độ khó nội tại: Teencode trong tiếng Việt và văn bản Weibo cực
+ngắn (15--30 ký tự) trong tiếng Trung. Hình~\ref{fig:roc_finetuned} hiển
+thị đường cong ROC sau tinh chỉnh.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{roc_finetuned.png}
+\caption{Đường cong ROC --- XLM-RoBERTa sau tinh chỉnh.
+EN và AR đạt AUC gần hoàn hảo (>0.95); VI và ZH cải thiện đáng kể so với baseline.}
+\label{fig:roc_finetuned}
+\end{figure}
+
+\subsection{Kết Quả Phát Hiện Dựa Trên Perplexity}
+
+Bảng~\ref{tab:ppl} và Hình~\ref{fig:roc} trình bày kết quả phương pháp
+PPL. EN (AUC = 0,754) và AR (AUC = 0,778) đạt hiệu năng khá tốt, trong
+khi VI (AUC = 0,538) và ZH (AUC = 0,534) gần như ngẫu nhiên.
+
+\begin{table}[h]
+\centering
+\caption{Kết quả Phương pháp 3: Perplexity Zero-Shot (Qwen2.5-1.5B)}
+\label{tab:ppl}
+\begin{tabular}{lrrrrl}
+\toprule
+\textbf{Ngôn ngữ} & \textbf{AUC-ROC} & \textbf{PPL\textsubscript{Human}}
+    & \textbf{PPL\textsubscript{Machine}} & \textbf{Tỉ lệ} & \textbf{Đánh giá} \\
+\midrule
+EN & \textbf{0,754} & 1.193,6 & 187,1  & 6,4$\times$ & Tốt \\
+AR & \textbf{0,778} & 260,7   & 76,7   & 3,4$\times$ & Tốt \\
+VI & 0,538          & 1.210,4 & 796,0  & 1,5$\times$ & Yếu \\
+ZH & 0,534          & 221,5   & 207,9  & 1,07$\times$ & Ngẫu nhiên \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{roc_statistical.png}
+\caption{Đường cong ROC của phương pháp PPL (Qwen2.5-1.5B) trên 4 ngôn ngữ.
+EN và AR có đường cong gần góc trên trái; ZH gần như trùng đường chéo ngẫu nhiên.}
+\label{fig:roc}
+\end{figure}
+
+Hiệu năng kém của VI và ZH được lý giải qua tỉ lệ PPL: ZH chỉ đạt
+\textbf{1,07$\times$} --- con người và máy hầu như không phân biệt được
+qua PPL --- do bài đăng Weibo cực ngắn khiến cả hai lớp có entropy tương
+đương nhau. VI đạt 1,5$\times$ nhưng chưa đủ lớn để phân tách tốt, do
+Teencode làm tăng PPL đồng đều cho cả hai lớp.
+
+\subsection{Kết Quả Học Chuyển Giao (Transfer Learning)}
+
+Bảng~\ref{tab:transfer} trình bày kết quả của bốn thí nghiệm
+\textit{leave-one-language-out}. Hiệu năng trung bình chỉ đạt
+\textbf{54,9\% accuracy} và \textbf{0,543 F1}, gần với mức ngẫu nhiên.
+
+\begin{table}[h]
+\centering
+\caption{Kết quả học chuyển giao (xlm-roberta-base, leave-one-language-out)}
+\label{tab:transfer}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Ngôn ngữ} & \textbf{Ngôn ngữ huấn luyện} & \textbf{Acc}
+    & \textbf{F1} & \textbf{ROC-AUC} \\
+\midrule
+EN & VI, ZH, AR & 0,545 & 0,683 & 0,851 \\
+VI & EN, ZH, AR & 0,531 & \textbf{0,134} & 0,536 \\
+ZH & EN, VI, AR & 0,503 & 0,666 & 0,512 \\
+AR & EN, VI, ZH & \textbf{0,619} & 0,691 & \textbf{0,810} \\
+\midrule
+\textbf{Trung bình} & & \textbf{0,549} & \textbf{0,543} & \textbf{0,677} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Kết quả cho thấy ba hiện tượng đáng chú ý:
+
+\begin{enumerate}
+    \item \textbf{Tiếng Việt thất bại hoàn toàn} (F1 = 0,134, recall = 0,076):
+    Mô hình dự đoán gần như toàn bộ là ``human'', cho thấy đặc trưng
+    MGT tiếng Việt (Teencode, cấu trúc câu không chính thức) không thể
+    học được từ các ngôn ngữ khác.
+
+    \item \textbf{Tiếng Trung bị thoái hóa} (Acc = 50,3\%): Mô hình thiên
+    về nhãn ``machine'' (395/400 human bị phân loại sai), dẫn đến recall
+    cao giả tạo (0,99) nhưng precision ngang tung đồng (0,501).
+
+    \item \textbf{EN và AR được hưởng lợi một phần}: AR đạt kết quả tốt
+    nhất (Acc = 61,9\%, AUC = 0,81). EN đạt recall 0,98 nhưng precision
+    chỉ 0,524 --- thiên lệch về nhãn ``machine''.
+\end{enumerate}
+
+\subsection{So Sánh Tổng Hợp Bốn Phương Pháp}
+
+Bảng~\ref{tab:comparison} tổng hợp hiệu năng của bốn phương pháp.
+
+\begin{table}[h]
+\centering
+\caption{So sánh tổng hợp bốn phương pháp}
+\label{tab:comparison}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Ngôn ngữ} & \textbf{Baseline Acc} & \textbf{XLM-R Acc}
+    & \textbf{PPL AUC} & \textbf{Transfer Acc} \\
+\midrule
+EN & 64,1\% & \textbf{95,4\%} & 0,754 & 54,5\% \\
+VI & 50,7\% & \textbf{70,3\%} & 0,538 & 53,1\% \\
+ZH & 47,6\% & \textbf{71,5\%} & 0,534 & 50,3\% \\
+AR & 48,3\% & \textbf{88,3\%} & 0,778 & 61,9\% \\
+\midrule
+\textbf{Khả dụng} & Chỉ EN & \textbf{4 ngôn ngữ} & EN + AR & Không \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+XLM-RoBERTa tinh chỉnh là phương pháp vượt trội nhất trên tất cả ngôn
+ngữ và tiêu chí. Phương pháp PPL có ưu điểm zero-shot (không cần dữ
+liệu nhãn) và hiệu quả với EN/AR, nhưng thất bại với VI/ZH. Baseline
+tiếng Anh không thể dùng được cho bài toán đa ngôn ngữ. Học chuyển giao
+cho thấy mỗi ngôn ngữ cần dữ liệu huấn luyện riêng --- đặc biệt với
+các ngôn ngữ có đặc thù hình thái như tiếng Việt và tiếng Trung.
