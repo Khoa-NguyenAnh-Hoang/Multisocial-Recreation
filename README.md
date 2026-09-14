@@ -6,7 +6,7 @@ This project was developed for **DS319 — Large Language Models** and recreates
 
 ## Overview
 
-The project investigates how multilingual language models perform when detecting machine-generated / synthetic hate-speech content across multiple languages.
+The project investigates how multilingual language models perform when detecting machine-generated content across multiple languages.
 
 The workflow covers:
 
