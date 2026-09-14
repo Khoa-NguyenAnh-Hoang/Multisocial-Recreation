@@ -1,6 +1,6 @@
 # MultiSocial-Recreation
 
-Multilingual stereotype and speech classification across **Arabic, English, Vietnamese, and Chinese**.
+Multilingual machine-generated classification across **Arabic, English, Vietnamese, and Chinese**.
 
 This project was developed for **DS319 — Large Language Models** and recreates and extends experiments around multilingual synthetic text generation and classification.
 
